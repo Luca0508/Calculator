@@ -291,7 +291,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="189" placeholderIntrinsicHeight="88.5" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="7dV-MF-akl">
                                                 <rect key="frame" x="199.5" y="0.0" width="184.5" height="84.5"/>
                                                 <subviews>
-                                                    <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IJH-yh-aqd">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IJH-yh-aqd">
                                                         <rect key="frame" x="0.0" y="0.0" width="86.5" height="84.5"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="IJH-yh-aqd" secondAttribute="height" multiplier="1:1" id="UQH-fR-k70"/>
@@ -302,8 +302,11 @@
                                                             <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <color key="baseBackgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="pressDecimalPoint:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3SO-6a-p0m"/>
+                                                        </connections>
                                                     </button>
-                                                    <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cnx-Cw-DSf">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cnx-Cw-DSf">
                                                         <rect key="frame" x="98.5" y="0.0" width="86" height="84.5"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="Cnx-Cw-DSf" secondAttribute="height" multiplier="1:1" id="brj-dF-o4T"/>
@@ -314,7 +317,7 @@
                                                             <color key="baseBackgroundColor" red="0.99607843139999996" green="0.62352941179999999" blue="0.039215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                                         </buttonConfiguration>
                                                         <connections>
-                                                            <action selector="operateButtonPress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wlO-cv-E85"/>
+                                                            <action selector="pressEqualButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7dB-5V-SR6"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -348,6 +351,8 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="decimalPointButton" destination="IJH-yh-aqd" id="36M-Uh-juI"/>
+                        <outlet property="equalButton" destination="Cnx-Cw-DSf" id="r25-81-ruC"/>
                         <outlet property="textLabel" destination="BQ0-Vh-Ll7" id="YyN-u8-kD1"/>
                         <outletCollection property="numberButtons" destination="GSv-JC-mma" collectionClass="NSMutableArray" id="oW4-tE-ZxR"/>
                         <outletCollection property="numberButtons" destination="lt9-lW-AGI" collectionClass="NSMutableArray" id="gkR-1W-nGm"/>
@@ -366,8 +371,6 @@
                         <outletCollection property="operateButtons" destination="lpO-Nl-xKS" collectionClass="NSMutableArray" id="rwf-nV-MQk"/>
                         <outletCollection property="operateButtons" destination="Nyf-O4-HBm" collectionClass="NSMutableArray" id="8KU-Gj-tyu"/>
                         <outletCollection property="operateButtons" destination="ysb-AT-FhR" collectionClass="NSMutableArray" id="HR5-a9-NEl"/>
-                        <outletCollection property="operateButtons" destination="Cnx-Cw-DSf" collectionClass="NSMutableArray" id="tGy-Zh-SQO"/>
-                        <outletCollection property="operateButtons" destination="IJH-yh-aqd" collectionClass="NSMutableArray" id="Wsz-kY-lwQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

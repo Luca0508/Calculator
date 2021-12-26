@@ -11,6 +11,8 @@ class ViewController: UIViewController {
 
     
     
+    @IBOutlet weak var equalButton: UIButton!
+    @IBOutlet weak var decimalPointButton: UIButton!
     @IBOutlet var numberButtons: [UIButton]!
     
     @IBOutlet var operateButtons: [UIButton]!
@@ -26,19 +28,31 @@ class ViewController: UIViewController {
         textLabel.text = "0"
         
         for i in 0...9{
-            numberButtons[i].clipsToBounds = true
-            numberButtons[i].layer.cornerRadius = numberButtons[i].bounds.height*0.5
+            setCornerRadius(button: numberButtons[i])
         }
-        for i in 0...8{
-            operateButtons[i].clipsToBounds = true
-            operateButtons[i].layer.cornerRadius = operateButtons[i].bounds.height*0.5
+        
+        for i in 0...6{
+            setCornerRadius(button: operateButtons[i])
         }
+        
+        setCornerRadius(button: decimalPointButton)
+        setCornerRadius(button: equalButton)
+        
         // Do any additional setup after loading the view.
+    }
+    
+    func setCornerRadius(button: UIButton){
+        button.clipsToBounds = true
+        button.layer.cornerRadius = button.bounds.height*0.5
     }
     
     
     @IBAction func numberButtonPress(_ sender: UIButton) {
         let inputNumber = sender.tag
+        
+        if equation.last == "."{
+            decimal = true
+        }
         
         if textLabel.text == "0"{
             textLabel.text = String(inputNumber)
@@ -48,7 +62,7 @@ class ViewController: UIViewController {
             equation += String(inputNumber)
         }
         
-        decimal = false
+       
         
         
     }
@@ -58,6 +72,7 @@ class ViewController: UIViewController {
         let origText = textLabel.text
         textLabel.text  = ""
         
+        print(equation)
         if equation == ""{
             equation = "0.0"
         }else {
@@ -74,7 +89,7 @@ class ViewController: UIViewController {
         case 0:
             textLabel.text = "0"
             
-            equation = "0"
+            equation = ""
         
         // +/-
         case 1:
@@ -88,13 +103,25 @@ class ViewController: UIViewController {
                 }
             }
             
-            
-            
-            equation +=  "*-1.0"
+            equation +=  "*-1"
             
         // %
         case 2:
-            equation += "/100.0"
+            equation += "/100"
+            
+            if let origText = origText {
+                var outputText = origText
+                if origText.contains("."){
+                    let decimalIndex = origText.firstIndex(of: ".")
+                    outputText.remove(at: decimalIndex!)
+                    outputText.insert(".", at: origText.index(decimalIndex!, offsetBy: -2))
+                }else{
+                    outputText.insert(".", at: origText.index(origText.endIndex, offsetBy: -2))
+                }
+                
+                textLabel.text = outputText
+            }
+            
         
         // /
         case 3:
@@ -111,30 +138,42 @@ class ViewController: UIViewController {
         // +
         case 6:
             equation += "+"
-        // =
-        case 7:
-            let expression = NSExpression(format: equation)
-            output = expression.expressionValue(with: nil, context: nil) as! Double 
-            textLabel.text = String(output)
-            print(equation)
-            equation = String(output)
-            decimal = true
-            
-            
-        // .
-        case 8:
-            equation += "."
-            decimal = true
+       
         default:
             textLabel.text = "Warning!!!"
             break
-            
-            
         }
+        
+        decimal = false
         
         
     }
     
-
+    
+    
+    @IBAction func pressDecimalPoint(_ sender: UIButton) {
+        equation += "."
+        textLabel.text! += "."
+        decimal = true
+        
+    }
+    
+    
+    
+    
+    @IBAction func pressEqualButton(_ sender: UIButton) {
+        
+        if decimal == false{
+            equation += ".0"
+        }
+        
+        let expression = NSExpression(format: equation)
+        output = expression.expressionValue(with: nil, context: nil) as! Double
+        textLabel.text = String(output)
+        print(equation)
+        equation = String(output)
+        decimal = true
+    }
+    
 }
 
