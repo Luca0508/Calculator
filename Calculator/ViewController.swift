@@ -37,8 +37,6 @@ class ViewController: UIViewController {
         
         setCornerRadius(button: decimalPointButton)
         setCornerRadius(button: equalButton)
-        
-        // Do any additional setup after loading the view.
     }
     
     func setCornerRadius(button: UIButton){
@@ -61,10 +59,6 @@ class ViewController: UIViewController {
             textLabel.text! += String(inputNumber)
             equation += String(inputNumber)
         }
-        
-       
-        
-        
     }
     
 
@@ -72,7 +66,7 @@ class ViewController: UIViewController {
         let origText = textLabel.text
         textLabel.text  = ""
         
-        print(equation)
+//        print(equation)
         if equation == ""{
             equation = "0.0"
         }else {
@@ -80,7 +74,6 @@ class ViewController: UIViewController {
                 equation += ".0"
             }
         }
-        
         
         
         switch sender.tag{
@@ -112,20 +105,29 @@ class ViewController: UIViewController {
             if let origText = origText {
                 var outputText = origText
                 if origText.contains("."){
-                    let decimalIndex = origText.firstIndex(of: ".")
+                    var distance = outputText.distance(from: outputText.startIndex, to: outputText.firstIndex(of: ".")!)
+                    while  distance <= 3{
+                        outputText = "0" + outputText
+                        distance += 1
+                    }
+                    let decimalIndex = outputText.firstIndex(of: ".")
                     outputText.remove(at: decimalIndex!)
                     outputText.insert(".", at: origText.index(decimalIndex!, offsetBy: -2))
                 }else{
-                    outputText.insert(".", at: origText.index(origText.endIndex, offsetBy: -2))
+                    while outputText.count < 3{
+                        outputText = "0" + outputText
+                    }
+                    outputText.insert(".", at: outputText.index(outputText.endIndex, offsetBy: -2))
                 }
                 
-                textLabel.text = outputText
+                textLabel.text = setStringFormat(output: Double(outputText)!, decimal: 7 )
             }
             
         
         // /
         case 3:
             equation += "/"
+            
             
         // *
         case 4:
@@ -152,9 +154,15 @@ class ViewController: UIViewController {
     
     
     @IBAction func pressDecimalPoint(_ sender: UIButton) {
-        equation += "."
-        textLabel.text! += "."
-        decimal = true
+        let origText = textLabel.text
+        
+        if let origText = origText {
+            if !origText.contains("."){
+                equation += "."
+                textLabel.text! += "."
+                decimal = true
+            }
+        }
         
     }
     
@@ -169,10 +177,22 @@ class ViewController: UIViewController {
         
         let expression = NSExpression(format: equation)
         output = expression.expressionValue(with: nil, context: nil) as! Double
-        textLabel.text = String(output)
+    
+        
+        textLabel.text = setStringFormat(output: output, decimal: 7 )
         print(equation)
+        print(output)
         equation = String(output)
         decimal = true
+    }
+    
+    func setStringFormat(output:Double, decimal:Int) -> String{
+        if output.truncatingRemainder(dividingBy: 1.0) == 0{
+            return String(format: "%.0f", output)
+        }
+        let numOfDigit = pow(10.0, Double(decimal))
+        return String((output * numOfDigit).rounded(.toNearestOrAwayFromZero)/numOfDigit)
+        
     }
     
 }
